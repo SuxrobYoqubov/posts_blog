@@ -123,7 +123,7 @@
         <section class="section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="page-wrapper">
 
 
@@ -135,99 +135,7 @@
                             {% endblock %}
                         </div><!-- end page-wrapper -->
                     </div><!-- end col -->
-                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                        <div class="sidebar">
-
-
-                            <div class="widget">
-                                <h2 class="widget-title">Eng mashhur</h2>
-                                <div class="blog-list-widget">
-                                    <div class="list-group">
-
-                                        {% for p in top_three_posts %}
-                                        <a href="{% url 'post:detail' p.id%}"
-                                            class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 justify-content-between">
-                                                <img src="{{p.image.url}}" alt="" class="img-fluid float-left">
-                                                <h5 class="mb-1">{{p.title|truncatechars:20}}</h5>
-                                                <small>{{p.created_post | date:"M d, Y"}}</small>
-                                            </div>
-
-                                        </a>
-                                        {% endfor %}
-
-                                    </div>
-                                </div><!-- end blog-list -->
-                            </div><!-- end widget -->
-
-                            <div class="widget">
-
-                                {% for c in three_comments %}
-
-                                <h2 class="widget-title">Comments</h2>
-                                <div class="blog-list-widget">
-                                    <div class="list-group">
-                                        <a href="{% url 'post:detail' c.post.id%}"
-                                            class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="w-100 justify-content-between">
-
-                                                <h5 class="mb-1">{{c.comment}}</h5>
-                                                <span class="rating">
-                                                    {% for i in "12345" %}
-                                                    {% if forloop.counter <= c.stars %} <span style="color: gold;">
-                                                        &#9733;</span>
-                                                {% else %}
-                                                <span style="color: lightgray;">&#9734;</span> <!-- Bo'sh yulduzcha -->
-                                                {% endif %}
-                                                {% endfor %}
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div><!-- end blog-list -->
-                                {% endfor %}
-                            </div><!-- end widget -->
-
-                            <div class="widget">
-                                <h2 class="widget-title">Bizga qo'shiling</h2>
-
-                                <div class="row text-center">
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="https://github.com/SuxrobYoqubov"
-                                            class="social-button facebook-button">
-                                            <i class="fa fa-github"></i>
-
-                                        </a>
-                                    </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="https://t.me/Yoqubov_Suxrob" class="social-button twitter-button">
-                                            <i class="fa fa-telegram"></i>
-
-                                        </a>
-                                    </div>
-
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                                        <a href="https://www.instagram.com/yoqubov.suxrob/"
-                                            class="social-button google-button">
-                                            <i class="fa fa-instagram"></i>
-
-                                        </a>
-                                    </div>
-
-
-                                </div>
-                            </div><!-- end widget -->
-
-                            <div class="widget">
-                                <div class="banner-spot clearfix">
-                                    <div class="banner-img">
-                                        <img src="upload/banner_03.jpg" alt="" class="img-fluid">
-                                    </div><!-- end banner-img -->
-                                </div><!-- end banner -->
-                            </div><!-- end widget -->
-                        </div><!-- end sidebar -->
-                    </div><!-- end col -->
+                    
                 </div><!-- end row -->
             </div><!-- end container -->
         </section>

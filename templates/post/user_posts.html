@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}User posts {% endblock %}
+{% block content %}
+
+<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+    <div class="page-wrapper">
+        <div class="blog-top clearfix">
+            <h4 class="pull-left">Sizning barcha postlari <a href="#"><i class="fa fa-rss"></i></a></h4>
+        </div><!-- end blog-top -->
+
+        <div class="blog-list clearfix">
+            <div class="blog-box row">
+                {% for p in posts_true %}
+                <div class="col-md-4">
+                    <div class="post-media">
+                        <a href="{% url 'post:detail' p.id%}" title="">
+                            <img src="{{p.image.url}}" alt="" class="img-fluid">
+                            <div class="hovereffect"></div>
+                        </a>
+                    </div><!-- end media -->
+                </div><!-- end col -->
+
+                <div class="blog-meta big-meta col-md-8">
+                    <h4><a href="{% url 'post:detail' p.id%}" title="">{{p.title}}</a></h4>
+                    <p>{{p.body|truncatechars:120}}</p>
+                    <small class="firstsmall"><a class="bg-orange" href="#" title="">{{p.category.name}}</a></small>
+                    <small><a href="{% url 'post:detail' p.id%}" title="">{{p.created_post | date:"M d, Y"}}</a></small>
+                    <small><a href="tech-author.html" title="">by {{p.author.full_name}}</a></small>
+                    <small><a href="{% url 'post:detail' p.id%}" title=""><i class="fa fa-eye"></i>
+                            {{p.view_count}}</a></small>
+                </div><!-- end meta -->
+                {% endfor %}
+            </div><!-- end blog-box -->
+
+            <hr class="invis">
+
+
+        </div><!-- end blog-list -->
+    </div><!-- end page-wrapper -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div><!-- end col -->
+    </div><!-- end row -->
+</div><!-- end col -->
+
+{% endblock %}

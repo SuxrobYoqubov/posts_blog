@@ -1,5 +1,5 @@
 from django import forms
-from post.models import PostComment
+from post.models import PostComment, Post
 
 class PostCommentForm(forms.ModelForm):
     stars = forms.IntegerField(min_value=1,max_value=5)
@@ -7,3 +7,8 @@ class PostCommentForm(forms.ModelForm):
     class Meta:
         model = PostComment
         fields = ('comment', )
+        
+class PostCreateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('category', 'title', 'body', 'image', )

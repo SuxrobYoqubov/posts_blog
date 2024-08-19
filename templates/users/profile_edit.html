@@ -1,0 +1,20 @@
+{% extends "base_minimal.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Profile Edit {% endblock %}
+{% block content %}
+
+<div class="custombox clearfix">
+    <h4 class="small-title">Profileni o'zgartirish</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <form class="form-wrapper" method="post" >
+                {% csrf_token %}
+                {{form | crispy}}
+                <button  class="btn btn-primary">Save</button>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

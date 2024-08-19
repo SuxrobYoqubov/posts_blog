@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from django.views import View
 from django.urls import reverse
-from post.models import Post, PostComment, Author, Category
+from post.models import Post, PostComment, Category, Author
 from django.db.models import Count
 from django.contrib import messages
-from post.form import PostCommentForm
+from post.form import PostCommentForm, PostCreateForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 class PostView(View):
@@ -35,7 +36,7 @@ class PostDetailView(View):
         }
         return render(request, 'post/detail.html', context)
     
-class AddCommentView(View):
+class AddCommentView(LoginRequiredMixin, View):
     def post(self, request, id):
         post = Post.objects.get(id=id)
         comment_form = PostCommentForm(data=request.POST)
@@ -68,4 +69,26 @@ class PostCategoryView(View):
         }
         
         return render(request, "post/category.html", context)
-        
+    
+class PostCreateView(LoginRequiredMixin, View):
+    def get(self, request):
+        create_form = PostCreateForm()
+        context = {
+            'form':create_form
+        }
+        return render(request, "post/post_create.html", context)  
+    
+    def post(self, request):
+        create_form = PostCreateForm(data=request.POST)
+        if create_form.is_valid():
+            post = create_form.save(commit=False)
+            try:
+                # Foydalanuvchi uchun Author obyektini olish
+                author = Author.objects.get(user=request.user)
+                post.author = author  # Author obyektini post muallifi sifatida belgilash
+                post.save()
+                return redirect('post:list')  # Post yaratgandan keyin qaysi sahifaga o'tishni belgilash
+            except Author.DoesNotExist:
+                create_form.add_error(None, "Siz uchun Author yozuvi topilmadi.")
+        else:
+            return render(request, 'users/post_create.html', {'form': create_form})
