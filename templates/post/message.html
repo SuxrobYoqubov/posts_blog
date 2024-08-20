@@ -1,0 +1,22 @@
+{% extends "base_minimal.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Send Message{% endblock %}
+{% block content %}
+<br>
+<div class="custombox clearfix">
+    <h4 class="small-title">Adminga xabar yuborish</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <form class="form-wrapper" method="post" action="{% url 'post:message' %}">
+                {% csrf_token %}
+                {{form | crispy}}
+                <button  class="btn btn-primary">Yuborish</button>
+                
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br><br>
+
+{% endblock %}

@@ -4,7 +4,7 @@ from django.urls import reverse
 from post.models import Post, PostComment, Category, Author
 from django.db.models import Count
 from django.contrib import messages
-from post.form import PostCommentForm, PostCreateForm
+from post.form import PostCommentForm, PostCreateForm, MessageForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
@@ -92,3 +92,19 @@ class PostCreateView(LoginRequiredMixin, View):
                 create_form.add_error(None, "Siz uchun Author yozuvi topilmadi.")
         else:
             return render(request, 'users/post_create.html', {'form': create_form})
+        
+class MessageView(View):
+    def get(self, request):
+        message_form = MessageForm()
+        context = {
+            "form":message_form
+        }
+        return render(request, "post/message.html", context)
+    
+    def post(self, request):
+        message_form = MessageForm(data=request.POST)
+        if message_form.is_valid():
+            message_form.save()
+            return redirect('post:list')  # Post yaratgandan keyin qaysi sahifaga o'tishni belgilash
+        else:
+            return render(request, 'post/message.html', {'form': message_form})

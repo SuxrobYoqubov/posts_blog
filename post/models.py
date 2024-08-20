@@ -13,7 +13,7 @@ class Category(models.Model):
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(default="profile_pic.jpg", 
-                                        upload_to="profile_images",blank=True)
+                                        blank=True)
     bio = models.TextField(blank=True)
     phone_number = models.CharField(
         max_length=9, default="", blank=True,
@@ -43,7 +43,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200, 
                              help_text="Postning qisqacha mazmuni")
     body = models.TextField(help_text="Postning to'liq ma'lumoti")
-    image = models.ImageField(upload_to="post_images", default="default.jpg", 
+    image = models.ImageField(upload_to="post_images", default="post_images/default.jpg", 
                               help_text="Postga oid rasm")
     created_post = models.DateTimeField(default=timezone.now)
     is_approved = models.BooleanField(default=False)  # Admin tasdiqlashi uchun
@@ -67,3 +67,22 @@ class PostComment(models.Model):
     
     def full_name(self):
         return f'{self.user.first_name} {self.user.last_name}'
+    
+class Message(models.Model):
+    name = models.CharField(max_length=150, help_text="Ismingizni kiriting.")
+    phone_number = models.CharField(
+        max_length=9, 
+        validators=[
+            RegexValidator(
+                regex=r'^\d{9}$',
+                message="Telefon raqami 9 ta raqamdan iborat bo'lishi kerak.",
+                code='invalid_phone_number'
+            ),
+        ],
+        help_text="Telefon raqamini 9 ta raqam shaklida kiriting."
+    )
+    message = models.TextField()
+    created_message = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.name

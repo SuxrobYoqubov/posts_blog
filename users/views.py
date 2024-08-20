@@ -3,7 +3,7 @@ from django.views import View
 from users.forms import UserCreateForm, ProfileEditForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from post.models import Post, PostComment, Category, Author
+from post.models import Post, PostComment, Category, Author, Message
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class RegisterView(View):
@@ -47,7 +47,10 @@ class ProfileView(LoginRequiredMixin, View):
         user = request.user
         is_admin = user.is_staff
         author_profile, created = Author.objects.get_or_create(user=user)
-        
+        posts_count = Post.objects.all().count()
+        posts_count_true = Post.objects.filter(is_approved=True).count()
+        count = posts_count-posts_count_true
+        message = Message.objects.all().order_by('-created_message')
         if author_profile:
             posts = Post.objects.filter(author=author_profile)
             posts_true = Post.objects.filter(author=author_profile, is_approved=True)
@@ -60,7 +63,9 @@ class ProfileView(LoginRequiredMixin, View):
             "is_admin":is_admin,
             "post_count":post_count,
             "post_count_true":post_count_true,
-            "posts_true":posts_true
+            "posts_true":posts_true,
+            "count":count,
+            "message":message,
         }
         return render(request, 'users/profile.html', context) 
 
