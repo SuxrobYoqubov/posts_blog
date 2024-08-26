@@ -4,6 +4,7 @@ from django.urls import reverse
 from post.models import Post, PostComment, Category, Author
 from django.db.models import Count
 from django.contrib import messages
+from django.core.paginator import Paginator
 from post.form import PostCommentForm, PostCreateForm, MessageForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
@@ -13,9 +14,14 @@ class PostView(View):
       
         posts = Post.objects.filter(is_approved=True).order_by('-created_post')
         
+        # kitoblarni 2 tadan bo'lib chiqarib beradi
+        page_size = request.GET.get("page_size", 2)
+        paginator = Paginator(posts, page_size)
+        page_num = request.GET.get("page", 1)
+        page_obj = paginator.get_page(page_num)
         context = {
-            "posts":posts,
             
+            "page_obj":page_obj
       
             }
         
@@ -25,8 +31,10 @@ class PostView(View):
 class PostDetailView(View):
     def get(self, request, id):
         post = get_object_or_404(Post, id=id)
+        post.view_count += 1
+        post.save()
         comment_count = post.postcomment_set.count()
-        comments = PostComment.objects.filter(post=post)
+        comments = post.postcomment_set.all()
         comment_form = PostCommentForm()
         context = {
             'post':post,
@@ -62,10 +70,14 @@ class PostCategoryView(View):
     def get(self, request, id):
         category_page = get_object_or_404(Category, id=id)
         posts = Post.objects.filter(category=category_page, is_approved=True).order_by('-created_post')
-        
+        # kitoblarni 2 tadan bo'lib chiqarib beradi
+        page_size = request.GET.get("page_size", 2)
+        paginator = Paginator(posts, page_size)
+        page_num = request.GET.get("page", 1)
+        page_obj = paginator.get_page(page_num)
         context = {
             "category_page":category_page,
-            "posts":posts
+            "page_obj":page_obj
         }
         
         return render(request, "post/category.html", context)
