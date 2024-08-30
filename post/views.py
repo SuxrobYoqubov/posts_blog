@@ -15,7 +15,7 @@ class PostView(View):
         posts = Post.objects.filter(is_approved=True).order_by('-created_post')
         
         # kitoblarni 2 tadan bo'lib chiqarib beradi
-        page_size = request.GET.get("page_size", 2)
+        page_size = request.GET.get("page_size", 5)
         paginator = Paginator(posts, page_size)
         page_num = request.GET.get("page", 1)
         page_obj = paginator.get_page(page_num)
@@ -71,7 +71,7 @@ class PostCategoryView(View):
         category_page = get_object_or_404(Category, id=id)
         posts = Post.objects.filter(category=category_page, is_approved=True).order_by('-created_post')
         # kitoblarni 2 tadan bo'lib chiqarib beradi
-        page_size = request.GET.get("page_size", 2)
+        page_size = request.GET.get("page_size", 5)
         paginator = Paginator(posts, page_size)
         page_num = request.GET.get("page", 1)
         page_obj = paginator.get_page(page_num)
